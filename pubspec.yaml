@@ -11,15 +11,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
-  http: ^1.2.1
-  webview_flutter: ^4.13.0
+  # We removed the version numbers to let Flutter find the best compatible versions.
+  cupertino_icons:
+  http:
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.1
+  flutter_lints:
 
 flutter:
+
   uses-material-design: true
