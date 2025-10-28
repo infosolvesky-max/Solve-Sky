@@ -22,16 +22,13 @@ android {
     defaultConfig {
         applicationId = "com.example.solvesky_app"
         
-        // --- মূল পরিবর্তনটি এখানে করা হয়েছে ---
-        // পুরোনো minSdkVersion-কে সরিয়ে ২২ সেট করা হলো, যা আধুনিক এবং নিরাপদ।
-        minSdk = 22
+        // --- চূড়ান্ত এবং स्थायी সমাধানটি শুধুমাত্র এই একটি লাইনে করা হয়েছে ---
+        // পুরোনো `flutter.minSdkVersion`-কে সরিয়ে ২২ সেট করা হলো।
+        minSdk = 22 
         
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-
-        // Multidex-এর লাইনটি এখনো রাখা হলো, এটি একটি ভালো অভ্যাস।
-        multiDexEnabled = true
     }
 
     buildTypes {
