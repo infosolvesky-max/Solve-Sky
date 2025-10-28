@@ -8,8 +8,8 @@ plugins {
 android {
     namespace = "com.example.solvesky_app"
     
-    // *** একমাত্র পরিবর্তনটি এখানে করা হয়েছে ***
-    // নতুন webview_flutter প্যাকেজের জন্য compileSdk ভার্সন 34-এ আপডেট করা হয়েছে।
+    // *** এই একটি লাইনই আমাদের সমস্ত সমস্যার সমাধান ***
+    // webview_flutter এবং image_picker দুটি প্যাকেজের জন্যই এই ভার্সনটি প্রয়োজন।
     compileSdk = 34 
 
     ndkVersion = flutter.ndkVersion
