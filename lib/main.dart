@@ -1,10 +1,11 @@
-// main.dart ফাইলের জন্য সম্পূর্ণ নতুন কোড
+// main.dart ফাইলের জন্য সম্পূর্ণ সংশোধিত এবং নির্ভুল কোড
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-// ফাইল আপলোডের জন্য দুটি নতুন প্যাকেজ ইমপোর্ট করা হলো
+// ফাইল আপলোডের জন্য দুটি প্যাকেজ ইমপোর্ট করা হলো
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package.image_picker/image_picker.dart';
+// নিচের লাইনে টাইপিং ভুলটি সংশোধন করা হয়েছে
+import 'package:image_picker/image_picker.dart';
 
 // আপনার ওয়েবসাইটের নাম: Solve Sky.
 const String solveSkyUrl = "https://www.solvesky.com";
