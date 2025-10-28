@@ -8,8 +8,7 @@ plugins {
 android {
     namespace = "com.example.solvesky_app"
     
-    // *** এই একটি লাইনই আমাদের সমস্ত সমস্যার সমাধান ***
-    // webview_flutter এবং image_picker দুটি প্যাকেজের জন্যই এই ভার্সনটি প্রয়োজন।
+    // *** ফাইল আপলোড সমস্যার সমাধান এই লাইনটিতেই (SDK 34) ***
     compileSdk = 34 
 
     ndkVersion = flutter.ndkVersion
