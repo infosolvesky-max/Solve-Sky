@@ -21,19 +21,21 @@ android {
 
     defaultConfig {
         applicationId = "com.example.solvesky_app"
-        minSdk = flutter.minSdkVersion
+        
+        // --- মূল পরিবর্তনটি এখানে করা হয়েছে ---
+        // পুরোনো minSdkVersion-কে সরিয়ে ২২ সেট করা হলো, যা আধুনিক এবং নিরাপদ।
+        minSdk = 22
+        
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
-        // Multidex চালু করার জন্য এই লাইনটি বিশেষভাবে যোগ করা হলো
+        // Multidex-এর লাইনটি এখনো রাখা হলো, এটি একটি ভালো অভ্যাস।
         multiDexEnabled = true
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
