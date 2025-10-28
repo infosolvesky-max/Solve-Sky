@@ -1,16 +1,20 @@
-// android/build.gradle.kts ফাইলের জন্য চূড়ান্ত এবং সহজ কোড
+// android/build.gradle.kts ফাইলের জন্য চূড়ান্ত এবং ডিফল্ট কোড
 
 plugins {
-    // আমরা ভার্সন নম্বর সরিয়ে দিচ্ছি, যাতে Flutter নিজে থেকে সঠিক ভার্সন বেছে নিতে পারে
-    id("com.android.application") apply false
-    id("org.jetbrains.kotlin.android") apply false
-    id("dev.flutter.flutter-gradle-plugin") apply false
+    id("com.android.application") version "8.0.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+    id("dev.flutter.flutter-gradle-plugin") version "1.0.0" apply false
 }
 
-// এই অংশটি পুরোনো সিস্টেমের সাথে সামঞ্জস্যের জন্য জরুরি
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+subprojects {
+    project.pluginManager.withPlugin("com.android.application") {
+        android {
+            // ...
+        }
+    }
+    project.pluginManager.withPlugin("com.android.library") {
+        android {
+            // ...
+        }
     }
 }
