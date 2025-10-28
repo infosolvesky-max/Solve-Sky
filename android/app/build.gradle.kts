@@ -1,4 +1,4 @@
-// android/app/build.gradle.kts ফাইলের জন্য চূড়ান্ত এবং সহজ কোড
+// android/app/build.gradle.kts ফাইলের জন্য চূড়ান্ত এবং ডিফল্ট কোড
 
 plugins {
     id("com.android.application")
@@ -6,9 +6,26 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
 android {
     namespace = "com.example.solvesky_app"
-    // আমরা ভার্সন নম্বর Flutter-এর উপর ছেড়ে দিচ্ছি
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -18,21 +35,21 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '1.8'
     }
 
     defaultConfig {
         applicationId = "com.example.solvesky_app"
-        // আমরা minSdk Flutter-এর উপর ছেড়ে দিচ্ছি, এটিই নিরাপদ
-        minSdk = flutter.minSdkVersion
+        // আধুনিক প্যাকেজের জন্য এটি ২১ বা তার বেশি রাখা প্রয়োজন।
+        minSdk = 21
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.debug
         }
     }
 }
