@@ -1,13 +1,11 @@
-// main.dart ফাইলের জন্য সম্পূর্ণ সংশোধিত এবং নির্ভুল কোড
-
+// main.dart ফাইলের জন্য চূড়ান্তভাবে সংশোধ
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-// ফাইল আপলোডের জন্য দুটি প্যাকেজ ইমপোর্ট করা হলো
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-// নিচের লাইনে টাইপিং ভুলটি সংশোধন করা হয়েছে
 import 'package:image_picker/image_picker.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+// Android-এর ফিচার ব্যবহারের জন্য এই ইমপোর্টটি জরুরি
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
-// আপনার ওয়েবসাইটের নাম: Solve Sky.
+// আপনার ওয়েবসাইটের ঠিকানা
 const String solveSkyUrl = "https://www.solvesky.com";
 
 void main() {
@@ -20,11 +18,11 @@ class SolveSkyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // DEBUG ব্যানার সরানোর জন্য এই লাইনটি যোগ করা হয়েছে
       debugShowCheckedModeBanner: false,
       title: 'Solve Sky',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
       home: const WebViewScreen(),
     );
@@ -39,59 +37,73 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  late final WebViewController controller;
+  late final WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    // WebView কন্ট্রোলার তৈরি করা
-    controller = WebViewController()
+    // --- WebView কন্ট্রোলার তৈরির নতুন এবং সঠিক পদ্ধতি ---
+
+    // 1. প্রথমে Android-এর জন্য বিশেষ প্যারামিটার তৈরি করা
+    final AndroidWebViewControllerCreationParams androidParams =
+        AndroidWebViewControllerCreationParams(
+      // ফাইল আপলোডের অনুরোধ পরিচালনা করার জন্য এই ফাংশনটি যোগ করা হয়েছে
+      onShowFileChooser: (final FileChooserParams params) async {
+        final picker = ImagePicker();
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
+
+        if (image != null) {
+          // ব্যবহারকারী ফাইল সিলেক্ট করলে তার পাথ ফেরত পাঠানো হবে
+          return <String>[Uri.file(image.path).toString()];
+        }
+        // ফাইল সিলেক্ট না করলে খালি তালিকা ফেরত পাঠানো হবে
+        return <String>[];
+      },
+    );
+
+    // 2. মূল কন্ট্রোলার তৈরি করার সময় উপরের প্যারামিটারটি যোগ করা
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(
+      PlatformWebViewControllerCreationParams(
+        android: androidParams,
+      ),
+    );
+
+    // 3. কন্ট্রোলারের বাকি বৈশিষ্ট্যগুলো সেট করা
+    controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            // Loading progress দেখানোর জন্য
-          },
+          onProgress: (int progress) {},
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {
-            // এরর পরিচালনা করার জন্য
-          },
+          onWebResourceError: (WebResourceError error) {},
         ),
       )
       ..loadRequest(Uri.parse(solveSkyUrl));
-
-    // ফাইল আপলোড চালু করার জন্য এই অংশটি বিশেষভাবে যোগ করা হয়েছে
+    
+    // Android WebView-তে ডিবাগিং চালু করা (ঐচ্ছিক কিন্তু সহায়ক)
     if (controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
       (controller.platform as AndroidWebViewController)
-          .setOnShowFileChooser((FileChooserParams params) async {
-        final picker = ImagePicker();
-        // গ্যালারি থেকে একটি মাত্র ছবি বা ভিডিও সিলেক্ট করার অপশন
-        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-        if (image != null) {
-          // ব্যবহারকারী যদি কোনো ফাইল সিলেক্ট করে, তবে তার পাথ ফেরত পাঠানো হবে
-          return [Uri.file(image.path).toString()];
-        }
-        // যদি কোনো ফাইল সিলেক্ট না করে, তবে খালি তালিকা ফেরত পাঠানো হবে
-        return [];
-      });
+          .setMediaPlaybackRequiresUserGesture(false);
     }
+    
+    _controller = controller;
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      // ব্যাক বাটনের কার্যকারিতার জন্য এই PopScope যুক্ত করা হয়েছে
+      // ব্যাক বাটনের কার্যকারিতার জন্য
       canPop: false,
-      onPopInvoked: (didPop) async {
-        if (await controller.canGoBack()) {
-          // যদি WebView-তে পেছনে যাওয়ার পেজ থাকে, তাহলে পেছনে যাবে
-          await controller.goBack();
+      onPopInvoked: (final bool didPop) async {
+        if (await _controller.canGoBack()) {
+          await _controller.goBack();
         } else {
-          // যদি পেছনে যাওয়ার পেজ না থাকে, তাহলে অ্যাপ বন্ধ হবে
           if (mounted) {
             Navigator.of(context).pop();
           }
@@ -101,9 +113,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
         appBar: AppBar(
           title: const Text('Solve Sky'),
           elevation: 0,
-          backgroundColor: Colors.blue,
         ),
-        body: WebViewWidget(controller: controller),
+        body: WebViewWidget(controller: _controller),
       ),
     );
   }
