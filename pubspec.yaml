@@ -13,10 +13,12 @@ dependencies:
 
   # প্যাকেজগুলো স্থিতিশীল (stable) রাখার জন্য ভার্সন নম্বর যোগ করা হলো।
   cupertino_icons: ^1.0.2
-  webview_flutter: ^4.7.0
+  
+  # *** এখানে পরিবর্তন করা হয়েছে ***
+  # সংস্করণ নম্বরগুলো মুছে দেওয়া হয়েছে যাতে সর্বশেষ সংস্করণ ডাউনলোড হয়।
+  webview_flutter:
+  webview_flutter_android:
 
-  # ফাইল আপলোডের কার্যকারিতা চালু করার জন্য এই দুটি প্যাকেজ যোগ করা হলো।
-  webview_flutter_android: ^3.16.0
   image_picker: ^1.1.2
 
 dev_dependencies:
