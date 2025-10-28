@@ -1,4 +1,12 @@
 // ফাইল: android/app/build.gradle (Groovy DSL)
+// *** চূড়ান্ত সমাধান: নতুন Flutter প্লাগইন সিনট্যাক্স ব্যবহার করা হয়েছে ***
+
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // নতুন নিয়মে Flutter প্লাগইন যোগ করা হলো
+    id "dev.flutter.flutter-gradle-plugin" 
+}
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -23,10 +31,6 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android' 
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
     // *** SDK 34 ফিক্স নিশ্চিত করা হয়েছে ***
     compileSdkVersion 34
@@ -50,7 +54,7 @@ flutter {
     source '../..'
 }
 
-// *** এখানে নতুন অংশ যোগ করা হয়েছে: Kotlin লাইব্রেরি যোগ করা হয়েছে ***
+// *** এখানে Kotlin লাইব্রেরি যোগ করা হয়েছে ***
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
